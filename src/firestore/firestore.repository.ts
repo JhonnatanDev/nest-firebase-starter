@@ -55,7 +55,7 @@ export class FirestoreRepository<T> {
 
     const updateModel = model as UpdateData<T>;
     await docRef.update(updateModel)
-    return await this.get(id);
+    return this.get(id);
   }
 
   async delete(id: string, documentRef:DocumentReference = null): Promise<string>{
@@ -72,9 +72,9 @@ export class FirestoreRepository<T> {
     const docRef = this.getDocumentReference(documentRef,id);
     const getModelResponse = await docRef.get();
 			if (!getModelResponse.exists) {
-				return await this.create(model,documentRef);
+				return this.create(model,documentRef);
 			} else {
-        return await this.update(id, model, documentRef)
+        return this.update(id, model, documentRef)
       }
   }
 
