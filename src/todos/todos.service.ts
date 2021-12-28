@@ -1,4 +1,4 @@
-import { FirestoreDocument, FirestoreFilter } from 'src/firestore/firestore.types';
+import { FirestoreDocument } from 'src/firestore/firestore.types';
 import { TodoDocument } from './documents/todo.document';
 import { FirestoreRepository } from 'src/firestore/firestore.repository';
 import { COLLECTIONS } from 'src/firestore/firestore.collections';
@@ -18,27 +18,27 @@ export class TodosService {
   }
 
   async create(todo: TodoDocument): Promise<FirestoreDocument<TodoDocument>>{
-    return await this.todosFirestoreRepository.create(todo);
+    return this.todosFirestoreRepository.create(todo);
   }
 
   async get(id:string): Promise<FirestoreDocument<TodoDocument>>{
-    return await this.todosFirestoreRepository.get(id);
+    return this.todosFirestoreRepository.get(id);
   }
 
   async findAll(filters: Filter[]):Promise<FirestoreDocument<TodoDocument>[]>{
     const firestoreFilters = filters.map(filter => mapFilterToFirestoreFilter(filter))
-    return await this.todosFirestoreRepository.findAll(firestoreFilters);
+    return this.todosFirestoreRepository.findAll(firestoreFilters);
   }
   
   async update(id: string, todo: TodoDocument): Promise<FirestoreDocument<TodoDocument>>{
-    return await this.todosFirestoreRepository.update(id, todo);
+    return this.todosFirestoreRepository.update(id, todo);
   }
 
   async delete(id: string): Promise<string>{
-    return await this.todosFirestoreRepository.delete(id);
+    return this.todosFirestoreRepository.delete(id);
   }
 
   async upsert(id: string, todo: TodoDocument): Promise<FirestoreDocument<TodoDocument>>{
-    return await this.todosFirestoreRepository.upsert(id, todo);
+    return this.todosFirestoreRepository.upsert(id, todo);
   }
 }
