@@ -1,4 +1,3 @@
-import { TodoDocument } from '../todos/documents/todo.document';
 import { COLLECTIONS } from './firestore.collections'
 
 export const FirestoreDatabaseProvider = 'firestoredb';

@@ -1,7 +1,7 @@
 import {
   Injectable,
 } from '@nestjs/common';
-import { CollectionReference, DocumentReference, FieldPath, Query, WhereFilterOp, UpdateData } from '@google-cloud/firestore';
+import { CollectionReference, DocumentReference, Query, UpdateData } from '@google-cloud/firestore';
 import { FirestoreDocument, FirestoreFilter } from './firestore.types';
 
 @Injectable()
@@ -17,8 +17,7 @@ export class FirestoreRepository<T> {
     const docRef = this.getDocumentReference(documentRef)
     await docRef.set({id:docRef.id, ...params});
     const documentResponse = await docRef.get();
-    const document = this.createFirestoreDocument(documentResponse);
-    return document;
+    return this.createFirestoreDocument(documentResponse);
   }
 
   async findAll(filters: FirestoreFilter[]): Promise<FirestoreDocument<T>[]> {
@@ -37,8 +36,7 @@ export class FirestoreRepository<T> {
     if(!documentResponse.exists){
       throw new Error(`Document in path ${this.collection.path} with ID ${id} not found`)
     }
-		const document = this.createFirestoreDocument(documentResponse);
-    return document;
+		return this.createFirestoreDocument(documentResponse);
   }
 
   async update(id: string, model: T, documentRef:DocumentReference = null): Promise<FirestoreDocument<T>> {
@@ -57,8 +55,7 @@ export class FirestoreRepository<T> {
 
     const updateModel = model as UpdateData<T>;
     await docRef.update(updateModel)
-    const updatedModel = await this.get(id);
-    return updatedModel;
+    return await this.get(id);
   }
 
   async delete(id: string, documentRef:DocumentReference = null): Promise<string>{
@@ -75,11 +72,9 @@ export class FirestoreRepository<T> {
     const docRef = this.getDocumentReference(documentRef,id);
     const getModelResponse = await docRef.get();
 			if (!getModelResponse.exists) {
-				const newModel = await this.create(model,documentRef);
-        return newModel;
+				return await this.create(model,documentRef);
 			} else {
-        const updatedModel = await this.update(id, model, documentRef)
-        return updatedModel;
+        return await this.update(id, model, documentRef)
       }
   }
 
@@ -105,7 +100,6 @@ export class FirestoreRepository<T> {
   private createFirestoreDocument = (snapshot: FirebaseFirestore.DocumentSnapshot<T>) => {
     const documentData = snapshot.data();
 		const documentId = snapshot.id;
-		const document = {ref: snapshot.ref, id: documentId, data:documentData };
-    return document;
+		return {ref: snapshot.ref, id: documentId, data:documentData };
   }
 }
