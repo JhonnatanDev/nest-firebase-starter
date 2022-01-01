@@ -5,7 +5,7 @@ import { COLLECTIONS } from 'src/firestore/firestore.collections';
 import { CollectionReference } from '@google-cloud/firestore';
 import { Inject, Logger } from '@nestjs/common';
 import { Filter } from 'src/common/types/Query.types';
-import { mapFilterToFirestoreFilter } from 'src/common/helpers/FilterToFirestoreFilter.helper';
+import { mapFilterToFirestoreFilter } from 'src/common/helpers/filter-to-firestore-filter.helper';
 
 export class TodosService {
   private logger: Logger = new Logger(COLLECTIONS.TODOS);
