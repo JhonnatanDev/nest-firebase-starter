@@ -16,7 +16,7 @@ export abstract class ResponseDto extends Dto {
   protected list(data: any[], target: Type<ResponseDto>): ResponseDto[]{
     const dtos = []
     //Check if is iterable 
-    if(!(data.length > 0)){
+    if((data.length <= 0)){
       return dtos;
     }
 

@@ -20,6 +20,6 @@ export class TodosResponseDto extends ResponseDto {
   {
     this.name = todo.name;
     this.dueDate = todo.dueDate.toDate();
-    return this.send() as ResponseDto;
+    return this.send();
   }
 }
