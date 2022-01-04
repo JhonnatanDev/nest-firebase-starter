@@ -32,18 +32,26 @@ export class FirebaseTodoController extends BaseController {
   @Dto(TodosResponseDto)
   @Get(TodosRoute.GET_TODO)
   async getTodo(@Param('todoId') todoId: string): Promise<TodoDocument> {
-    const todo = await this.todosService.get(todoId);
+    try{
+      const todo = await this.todosService.get(todoId);
     return todo.data;
+    } catch(error){
+      this.handleError(error, `Failed to retrieve todo resource with ID: ${todoId}`);
+    }
   }
 
   @Post(TodosRoute.CREATE_TODO)
   @HttpCode(200)
   async createTodo(@Body() createTodoDto: CreateTodoDto): Promise<TodoDocument> {
-    const timestampMillis = Timestamp.fromMillis(createTodoDto.dueDate.getTime())
-    const todo = new TodoDocument();
-    todo.name = createTodoDto.name;
-    todo.dueDate = timestampMillis;
-    const newTodo = await this.todosService.create(todo);
-    return newTodo.data;
+    try{
+      const timestampMillis = Timestamp.fromMillis(createTodoDto.dueDate.getTime())
+      const todo = new TodoDocument();
+      todo.name = createTodoDto.name;
+      todo.dueDate = timestampMillis;
+      const newTodo = await this.todosService.create(todo);
+      return newTodo.data;
+    } catch(error){
+      this.handleError(error, `Failed to create todo resource`);
+    }
   }
 }
