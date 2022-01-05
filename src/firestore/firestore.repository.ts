@@ -103,7 +103,8 @@ export class FirestoreRepository<T> {
   }
 
   private getDocumentReference = (documentRef:DocumentReference, id:string = null): DocumentReference<T> => {
-    return documentRef ? documentRef.collection(this.collection.path).doc(id) as DocumentReference<T> : this.collection.doc(id);
+    const collection = documentRef ? documentRef.collection(this.collection.path) as CollectionReference<T> : this.collection;
+    return id ? collection.doc(id) : this.collection.doc();
   }
 
   private getFirestoreSnapshot = (filters: FirestoreFilter[]): Promise<FirebaseFirestore.QuerySnapshot<T>> => {
